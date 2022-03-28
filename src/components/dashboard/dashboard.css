@@ -1,0 +1,44 @@
+.dashboard{
+    margin-top:-15px;
+    width:100%;
+    overflow: hidden; 
+}
+.nav{
+    background-color: darkcyan;
+    float:left;
+    height:75px;
+    width:100%;
+    box-shadow: 0px 1px 2px 2px grey;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+img{
+    height: 77%;
+    width: 200px;
+    margin-top: 16px;
+    border-radius: 0% !important;
+}
+
+.nav-header{
+    font-family: 'Roboto Slab', serif;
+    font-size:22px;
+    text-align: center;
+    margin-top:10px;
+    font-weight: bold;
+    color:azure;
+}
+
+.nav-user p{
+    font-family: 'Playfair Display', serif;
+    color:azure;
+    margin-right: 10px;
+    /* margin-top: -0.5%; */
+    margin-bottom: -0.1px;
+}
+
+.nav-project{
+    display:inline;
+    color:aquamarine;
+}

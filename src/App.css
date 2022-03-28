@@ -58,4 +58,6 @@
   }
   body{
   background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(0, 217, 255, 0.4));
+  margin:0;
+  width:100%;
   }
