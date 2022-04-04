@@ -4,6 +4,7 @@ import TableDatePicker from '../datepicker/datepicker';
 import styled from 'styled-components';
 import InfoCard from '../infocards/infocard';
 import moment from 'moment';
+import ChartReport from '../charts/chartreport';
 const Styles = styled.div`
  .MuiButton-root{
      margin-top:-125px;
@@ -123,7 +124,6 @@ export class Report extends React.Component{
             <Styles>
             <Button onClick={this.getFiltData} className="selbutton" color = "primary" variant = "contained">Search</Button>
             </Styles>
-            
             </div>
     
     <TableContainer style={{ width: 900, marginLeft:280 ,height:400}} component={Paper}>
@@ -162,7 +162,7 @@ export class Report extends React.Component{
     </TableBody>}
       </Table>
     </TableContainer>
-
+    <ChartReport data={rows}/>
             </div>
     }
 }
