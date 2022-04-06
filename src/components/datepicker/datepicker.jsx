@@ -17,7 +17,7 @@ const Styles = styled.div`
 export default function TableDatePicker(props) {
  const [startDate, setStartDate] = useState(null);
  const [endDate, setEndDate] = useState(null);
-  
+ console.log(props.showDates)
  return (
  
    <div>

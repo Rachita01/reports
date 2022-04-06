@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import InfoCard from '../infocards/infocard';
 import moment from 'moment';
 import ChartReport from '../charts/chartreport';
+import '../reports/report.css';
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+
 const Styles = styled.div`
  .MuiButton-root{
      margin-top:-125px;
@@ -35,6 +38,9 @@ const rows = [
   createRow("3/7/2022", 8934, 'RFF',60,10),
   createRow("3/8/2022", 1246, 'DEV',10,3),
   createRow("3/9/2022", 483, 'RFF',1,0),
+  createRow("3/29/2022", 1904, 'REF',130,50),
+  createRow("4/1/2022", 3340, 'SIT',170,40),
+  createRow("4/2/2022", 24449, 'DEV',250,110),
   createRow("2/10/2022", 654, 'SIT',94,3),
   createRow("2/12/2022", 585, 'RFF',1,0),
   createRow("2/13/2022", 34, 'DEV',575,5),
@@ -53,6 +59,13 @@ const passper = ((psum/totalc)*100).toFixed(2);
 const envs = rows.map( r => r.env);
 const unique = [...new Set(envs)];
 const envc = unique.length;
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+
+today = mm + '/' + dd + '/' + yyyy;
+console.log(today);
 let sdate;
 let edate;
 
@@ -60,7 +73,9 @@ export class Report extends React.Component{
   state = {
     startdate: "",
     enddate:"",
-    showFil:false
+    showFil:false,
+    orderDirection:'asc',
+    defaultData:false
    }
    
    getStartDate = (childStart) =>{
@@ -70,14 +85,37 @@ export class Report extends React.Component{
    }
    getEndDate = (childEnd) =>{
     this.setState({enddate: childEnd})
+    this.setState({showFil:false});
    }
 
    getFiltData = () => {
      this.setState({showFil:true});
-     
    }
-  
+
+  //  getDefaultData = () => {
+  //    this.setState({showFil:false});
+  //  }
+   
+   sortArray = (data, orderDir) => {
+    switch (orderDir) {
+      case "asc":
+      default:
+        return data.sort((a, b) =>
+          a.id > b.id ? 1 : b.id > a.id ? -1 : 0
+        );
+      case "desc":
+        return data.sort((a, b) =>
+          a.id < b.id ? 1 : b.id < a.id ? -1 : 0  
+        );
+    }
+  };
+   getOrderDirection =() => {
+    this.state.orderDirection === "asc" ? this.setState({orderDirection : "desc"}) : this.setState({orderDirection:"asc"})
+    this.sortArray(rows,this.state.orderDirection);
+  }
+
     render(){
+      console.log(this.state.defaultData);
       sdate = new Date(this.state.startdate).toLocaleString('en-US', {
         day:   'numeric',
         month: 'numeric',
@@ -120,18 +158,19 @@ export class Report extends React.Component{
                 float:"right"
             }}/>
             <div>
-            <TableDatePicker startDate = {this.getStartDate} endDate = {this.getEndDate}/>
+            <TableDatePicker startDate = {this.getStartDate} endDate = {this.getEndDate} showDates = {this.state.showFil}/>
             <Styles>
             <Button onClick={this.getFiltData} className="selbutton" color = "primary" variant = "contained">Search</Button>
+            {/* <Button onClick={this.getDefaultData} className="selbutton" color = "primary" variant = "contained">Clear</Button> */}
             </Styles>
             </div>
-    
+     
     <TableContainer style={{ width: 900, marginLeft:280 ,height:400}} component={Paper}>
       <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>Date</TableCell>
-            <TableCell>RunID</TableCell>
+            <TableCell>RunID<TableSortLabel active={true} direction={this.state.orderDirection} onClick={this.getOrderDirection}/></TableCell>
             <TableCell>Environment</TableCell>
             <TableCell>Total TC</TableCell>
             <TableCell>Pass</TableCell>
@@ -149,7 +188,7 @@ export class Report extends React.Component{
               <TableCell>{row.fail}</TableCell>
             </TableRow>)}
             </TableBody> : <TableBody>
-          {rows.map((row) => 
+          {rows.filter(val=>(moment(val.date).isBetween(moment(today).subtract(15,'d'),moment(today)))).map((row) => 
             <TableRow key={row.id}>
               <TableCell>{displayDate(row.date)}</TableCell>
               <TableCell>{row.id}</TableCell>

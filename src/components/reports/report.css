@@ -1,4 +1,15 @@
-.selbutton{
-    display: inline;
-    margin-top: -30px;
+.searchin{
+    display:flex;
+    flex-direction: row;
+    /* justify-content:space-around; */
 }
+
+.searchrun{
+    margin-left: 50px;
+    
+}
+
+.searchenv{
+    margin-left:-130px;
+    
+} 
